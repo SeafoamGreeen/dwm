@@ -380,8 +380,8 @@ static Key keys[] = {
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
 
 	{ MODKEY,                       XK_Tab,        view,                   {0} },
-	{ MODKEY|Mod1Mask,              XK_Tab,        shiftviewclients,       { .i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_backslash,  shiftviewclients,       { .i = +1 } },
+	{ MODKEY,              XK_h,        shiftviewclients,       { .i = -1 } },
+	{ MODKEY,              XK_l,  shiftviewclients,       { .i = +1 } },
 
 	{ MODKEY,           XK_m,          showhideclient,         {0} },
 	{ MODKEY,                       XK_q,          killclient,             {0} },
@@ -432,8 +432,8 @@ static Key keys[] = {
 
 	/* { MODKEY,                       XK_comma,      focusmon,               {.i = -1 } }, */
 	/* { MODKEY,                       XK_period,     focusmon,               {.i = +1 } }, */
-	{ MODKEY,             XK_h,      tagmon,                 {.i = -1 } },
-	{ MODKEY,             XK_l,     tagmon,                 {.i = +1 } },
+	/* { MODKEY,             XK_h,      tagmon,                 {.i = -1 } }, */
+	/* { MODKEY,             XK_l,     tagmon,                 {.i = +1 } }, */
   {MODKEY|ShiftMask, XK_s, spawn, SHCMD("flameshot gui") },
 
 	/* { MODKEY|ShiftMask,             XK_F1,         tagall,                 {.v = "F1"} }, */

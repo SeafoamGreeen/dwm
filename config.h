@@ -331,10 +331,15 @@ static Key keys[] = {
 	/* { MODKEY,                       XK_j,          focusstack,             {.i = +1 } }, */
 	/* { MODKEY,                       XK_k,          focusstack,             {.i = -1 } }, */
     /* move hjkl */
-	{ MODKEY,                       XK_h,          focusdir,               {.i = 0 } }, // left
-	{ MODKEY,                       XK_l,          focusdir,               {.i = 1 } }, // right
-	{ MODKEY,                       XK_k,          focusdir,               {.i = 2 } }, // up
-	{ MODKEY,                       XK_j,          focusdir,               {.i = 3 } }, // down
+	/* { MODKEY,                       XK_h,          focusdir,               {.i = 0 } }, // left */
+	/* { MODKEY,                       XK_l,          focusdir,               {.i = 1 } }, // right */
+	/* { MODKEY,                       XK_k,          focusdir,               {.i = 2 } }, // up */
+	/* { MODKEY,                       XK_j,          focusdir,               {.i = 3 } }, // down */
+                                                                                      //
+
+	{ MODKEY,                       XK_j,          focusstack,             {.i = +1 } },
+	{ MODKEY,                       XK_k,          focusstack,             {.i = -1 } },
+
 /* inc dec master */
 	{ MODKEY,                       XK_plus,       incnmaster,             {.i = +1 } },
 	{ MODKEY,                       XK_minus,      incnmaster,             {.i = -1 } },
@@ -427,8 +432,9 @@ static Key keys[] = {
 
 	/* { MODKEY,                       XK_comma,      focusmon,               {.i = -1 } }, */
 	/* { MODKEY,                       XK_period,     focusmon,               {.i = +1 } }, */
-	/* { MODKEY|ShiftMask,             XK_comma,      tagmon,                 {.i = -1 } }, */
-	/* { MODKEY|ShiftMask,             XK_period,     tagmon,                 {.i = +1 } }, */
+	{ MODKEY,             XK_h,      tagmon,                 {.i = -1 } },
+	{ MODKEY,             XK_l,     tagmon,                 {.i = +1 } },
+  {MODKEY|ShiftMask, XK_s, spawn, SHCMD("flameshot gui") },
 
 	/* { MODKEY|ShiftMask,             XK_F1,         tagall,                 {.v = "F1"} }, */
 	/* { MODKEY|ShiftMask,             XK_F2,         tagall,                 {.v = "F2"} }, */

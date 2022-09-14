@@ -213,8 +213,9 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, cantfocus;
+	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 	int fakefullscreen;
+	int ismax, wasfloating;
 	int beingmoved;
 	int isterminal, noswallow;
 	pid_t pid;
@@ -264,7 +265,9 @@ struct Monitor {
 	Monitor *next;
 	Bar *bar;
 	const Layout *lt[2];
+	unsigned int alttag;
 	Pertag *pertag;
+	char taglabel[NUMTAGS][64];
 };
 
 typedef struct {
@@ -343,7 +346,6 @@ static Monitor *recttomon(int x, int y, int w, int h);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
-static void resetcanfocusfloating();
 static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
@@ -363,7 +365,6 @@ static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
-static void togglecanfocusfloating(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus, Client *nextfocus);
@@ -971,6 +972,8 @@ createmon(void)
 		/* init mfacts */
 		m->pertag->mfacts[i] = m->mfact;
 
+		/* init showbar */
+		m->pertag->showbars[i] = m->showbar;
 
 		m->pertag->prevzooms[i] = NULL;
 
@@ -1223,8 +1226,6 @@ focus(Client *c)
 	if (selmon->sel && selmon->sel != c)
 		unfocus(selmon->sel, 0, c);
 	if (c) {
-    		if (c->cantfocus)
-			return;
 		if (c->mon != selmon)
 			selmon = c->mon;
 		if (c->isurgent)
@@ -1283,16 +1284,16 @@ focusstack(const Arg *arg)
 	if (!selmon->sel || (selmon->sel->isfullscreen && !selmon->sel->fakefullscreen))
 		return;
 	if (arg->i > 0) {
-    for (c = selmon->sel->next; c && (!ISVISIBLE(c) || (arg->i == 1 && HIDDEN(c)) || c->cantfocus); c = c->next);
-    if (!c)
-    for (c = selmon->clients; c && (!ISVISIBLE(c) || (arg->i == 1 && HIDDEN(c)) || c->cantfocus); c = c->next);
+		for (c = selmon->sel->next; c && (!ISVISIBLE(c) || (arg->i == 1 && HIDDEN(c))); c = c->next);
+		if (!c)
+			for (c = selmon->clients; c && (!ISVISIBLE(c) || (arg->i == 1 && HIDDEN(c))); c = c->next);
 	} else {
 		for (i = selmon->clients; i != selmon->sel; i = i->next)
-  if (ISVISIBLE(i) && !(arg->i == -1 && HIDDEN(i)) && !i->cantfocus)
+			if (ISVISIBLE(i) && !(arg->i == -1 && HIDDEN(i)))
 				c = i;
-	if (!c)
+		if (!c)
 			for (; i; i = i->next)
-  if (ISVISIBLE(i) && !(arg->i == -1 && HIDDEN(i)) && !i->cantfocus)
+				if (ISVISIBLE(i) && !(arg->i == -1 && HIDDEN(i)))
 					c = i;
 	}
 	if (c) {
@@ -1542,6 +1543,8 @@ manage(Window w, XWindowAttributes *wa)
 
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
+	c->wasfloating = 0;
+	c->ismax = 0;
 
 	if (!c->isfloating)
 		c->isfloating = c->oldstate = trans != None || c->isfixed;
@@ -2105,11 +2108,9 @@ setfullscreen(Client *c, int fullscreen)
 void
 setlayout(const Arg *arg)
 {
-	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt]) {
 		selmon->pertag->sellts[selmon->pertag->curtag] ^= 1;
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
-	}
-	if (arg && arg->v)
+	if (arg && arg->v && arg->v != selmon->lt[selmon->sellt ^ 1])
 		selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] = (Layout *)arg->v;
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 
@@ -2297,8 +2298,6 @@ sigchld(int unused)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
 
 	if (fork() == 0)
 	{
@@ -2355,7 +2354,7 @@ void
 togglebar(const Arg *arg)
 {
 	Bar *bar;
-	selmon->showbar = !selmon->showbar;
+	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
 	updatebarpos(selmon);
 	for (bar = selmon->bar; bar; bar = bar->next)
 		XMoveResizeWindow(dpy, bar->win, bar->bx, bar->by, bar->bw, bar->bh);
@@ -2392,59 +2391,10 @@ togglefloating(const Arg *arg)
 		c->sfw = c->w;
 		c->sfh = c->h;
 	}
-  resetcanfocusfloating();
 	arrange(c->mon);
 
 	setfloatinghint(c);
 }
-void
-resetcanfocusfloating()
-{
-	unsigned int i, n;
-	Client *c;
-
-	for (n = 0, c = selmon->clients; c; c = c->next, n++);
-	if (n == 0)
-		return;
-
-	for (i = 0, c = selmon->clients; c; c = c->next, i++)
-    if (c->isfloating)
-      c->cantfocus = 0;
-
-	arrange(selmon);
-}
-
-void
-togglecanfocusfloating(const Arg *arg)
-{
-	unsigned int n;
-	Client *c, *cf = NULL;
-
-  if (!selmon->sel)
-      return;
-
-  for (c = selmon->clients; c; c = c->next)
-      if (c->cantfocus == 1) {
-          cf = c;
-      }
-
-  if (cf) {
-      resetcanfocusfloating();
-      focus(cf);
-  } else {
-    for (n = 0, c = selmon->clients; c; c = c->next)
-        if (c->isfloating)
-            c->cantfocus = !c->cantfocus;
-        else
-            n++;
-
-    if (n && selmon->sel->isfloating) {
-        c = nexttiled(selmon->clients);
-        focus(c);
-    }
-  }
-  arrange(selmon);
- }
 
 void
 toggletag(const Arg *arg)
@@ -2490,6 +2440,8 @@ toggleview(const Arg *arg)
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
 		selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 		selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
+		if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
+			togglebar(NULL);
 		focus(NULL);
 		arrange(selmon);
 	}
@@ -2618,8 +2570,11 @@ updatebarpos(Monitor *m)
 	Bar *bar;
 	int y_pad = 0;
 	int x_pad = 0;
-	y_pad = vertpad;
-	x_pad = sidepad;
+	if (!selmon || selmon->pertag->enablegaps[selmon->pertag->curtag])
+	{
+		y_pad = gappoh;
+		x_pad = gappov;
+	}
 
 
 	for (bar = m->bar; bar; bar = bar->next) {
@@ -2996,6 +2951,8 @@ main(int argc, char *argv[])
 	if (!(xcon = XGetXCBConnection(dpy)))
 		die("dwm: cannot get xcb connection\n");
 	checkotherwm();
+	XrmInitialize();
+	loadxrdb();
 	setup();
 #ifdef __OpenBSD__
 	if (pledge("stdio rpath proc exec ps", NULL) == -1)

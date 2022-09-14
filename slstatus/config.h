@@ -66,15 +66,16 @@ static const char unknown_str[] = "n/a";
 static const struct arg args[] = {
   /* {disk_free, "|HDD:%s/", "/"}, */
   /* {disk_total, "%s|", "/"}, */
-  {ram_used, "^c#dddddd^ RAM:^c#bbbbbb^%s/", NULL},
+  { run_command,    "PAC:%s ",     "cat numofupdates.txt" },
+  {ram_used, "RAM:%s/", NULL},
   {ram_total, "%s ", NULL},
-  {cpu_perc, " ^c#dddddd^ CPU:^c#bbbbbb^%3s%% ", NULL},
+  {cpu_perc, "CPU:%3s%% ", NULL},
   /* { run_command,  "[%s]",    {"~/slstatus/custom/brightness"} }, */
   /* { run_command,  "[%s]",    {"~/slstatus/custom/volume"} }, */
   /* {uptime, "|UP:%s%|", NULL}, */
-  {wifi_essid, " ^c#dddddd^NET:^c#bbbbbb^%s", "wlan0"},
-  {wifi_perc, "(%3s%%) ", "wlan0"},
-  {battery_perc, " ^c#dddddd^BAT:^c#bbbbbb^%3s%%", "BAT0"},
-  {battery_state, "%s ", "BAT0"},
+  /* {wifi_essid, " ^c#dddddd^NET:^c#bbbbbb^%s", "wlan0"}, */
+  /* {wifi_perc, "(%3s%%) ", "wlan0"}, */
+  {battery_perc,"BAT:%3s%% ", "BAT0"},
+  {battery_state,"%s", "BAT0"},
 	{datetime, " %s", "%a %F %r"},
 };

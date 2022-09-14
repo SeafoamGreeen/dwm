@@ -4,6 +4,7 @@ struct Pertag {
 	const Layout *ltidxs[NUMTAGS + 1][2]; /* matrix of tags and layouts indexes  */
 	float mfacts[NUMTAGS + 1]; /* mfacts per tag */
 	unsigned int sellts[NUMTAGS + 1]; /* selected layouts */
+	int showbars[NUMTAGS + 1]; /* display bar for the current tag */
 	Client *prevzooms[NUMTAGS + 1]; /* store zoom information */
 	int enablegaps[NUMTAGS + 1];
 	unsigned int gaps[NUMTAGS + 1];
@@ -39,5 +40,7 @@ pertagview(const Arg *arg)
 	selmon->gappih = (selmon->pertag->gaps[selmon->pertag->curtag] & 0xff0000) >> 16;
 	selmon->gappiv = (selmon->pertag->gaps[selmon->pertag->curtag] & 0xff000000) >> 24;
 
+	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
+		togglebar(NULL);
 }
 

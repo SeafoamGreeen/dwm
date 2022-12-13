@@ -10,7 +10,7 @@ static const unsigned int gappoh         = 0;  /* horiz outer gap between window
 static const unsigned int gappov         = 0;  /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 0;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const int showbar                 = 1;   /* 0 means no bar */
-static const int topbar                  = 0;   /* 0 means bottom bar */
+static const int topbar                  = 1;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
 static int floatposgrid_x                = 5;  /* float grid columns */
 static int floatposgrid_y                = 5;  /* float grid rows */
@@ -29,8 +29,8 @@ static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 static int fakefsindicatortype           = INDICATOR_PLUS;
 static int floatfakefsindicatortype      = INDICATOR_PLUS_AND_LARGER_SQUARE;
 /* static const char *fonts[]               = { "Fira Code Nerd Font:size=9:style=Bold","Fira Code Nerd Font:size=16" }; */
-static const char *fonts[]               = { " Terminus:size=13","Fira Code Nerd Font:size=16" };
-/* static const char *fonts[]               = { " monospace:size=10","Fira Code Nerd Font:size=16" }; */
+static const char *fonts[]               = { " Terminus:size=9","Fira Code Nerd Font:size=16" };
+/* static const char *fonts[]               = { " :size=7","Fira Code Nerd Font:size=16" }; */
 static const char dmenufont[]            = "monospace:size=10";
 
 static char c000000[]                    = "#000000"; // placeholder value
@@ -269,7 +269,7 @@ static const char *mousecmd[]  = {"mouseless","-c","/home/seafoam/.config/mousel
 
 static const char *roficmd[] = { "rofi", "-show", "combi", NULL };
 
-static const char *wallcmd[] = { "wallchange", NULL };
+static const char *wallcmd[] = { "wallchange.sh", NULL };
 
 static Key keys[] = {
 	/* modifier                     key            function                argument */
@@ -342,7 +342,7 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_Left,       shiftboth,              { .i = -1 } }, // note keybinding conflict with focusadjacenttag tagandviewtoleft
 	{ MODKEY|ControlMask,           XK_Right,      shiftboth,              { .i = +1 } }, // note keybinding conflict with focusadjacenttag tagandviewtoright
 
-	{ MODKEY,           XK_m,          showhideclient,         {0} },
+	/* { MODKEY,           XK_m,          showhideclient,         {0} }, */
 	{ MODKEY,                       XK_q,          killclient,             {0} },
 	{ MODKEY,                       XK_BackSpace,          killclient,             {0} },
 
@@ -404,7 +404,7 @@ static Key keys[] = {
   {MODKEY, XK_Right, spawn, SHCMD("xrandr --output eDP-1 --rotate right") },
   {MODKEY, XK_Up, spawn, SHCMD("xrandr --output eDP-1 --rotate inverted") },
   {MODKEY, XK_Down, spawn, SHCMD("xrandr --output eDP-1 --rotate normal") },
-  {Mod1Mask|ShiftMask, XK_w, spawn,                  {.v = wallcmd } },
+  {MODKEY|ShiftMask, XK_w, spawn,                  {.v = wallcmd } },
   {Mod1Mask, XK_Tab, spawn,                  {.v = mousecmd } },
 
 	/* { MODKEY,                       XK_comma,      focusmon,               {.i = -1 } }, */
@@ -432,7 +432,7 @@ static Key keys[] = {
 	/* { MODKEY|Mod4Mask|ShiftMask,    XK_comma,      tagallmon,              {.i = +1 } }, */
 	/* { MODKEY|Mod4Mask|ShiftMask,    XK_period,     tagallmon,              {.i = -1 } }, */
 
-	{ MODKEY,                       XK_n,          togglealttag,           {0} },
+	/* { MODKEY,                       XK_n,          togglealttag,           {0} }, */
 	{ MODKEY|Mod1Mask,                       XK_7,       moveplace,              {.ui = WIN_NW }},   /* XK_KP_Home,  */
 	{ MODKEY|Mod1Mask,                       XK_8,       moveplace,              {.ui = WIN_N  }},   /* XK_KP_Up,    */
 	{ MODKEY|Mod1Mask,                       XK_9,       moveplace,              {.ui = WIN_NE }},   /* XK_KP_Prior, */
@@ -560,4 +560,62 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,              Button3,        toggletag,      {0} },
 };
 
+
+
+/* signal definitions */
+/* signum must be greater than 0 */
+/* trigger signals using `xsetroot -name "fsignal:<signame> [<type> <value>]"` */
+static Signal signals[] = {
+	/* signum                    function */
+	{ "focusstack",              focusstack },
+	{ "setmfact",                setmfact },
+	{ "togglebar",               togglebar },
+	{ "incnmaster",              incnmaster },
+	{ "togglefloating",          togglefloating },
+	{ "focusmon",                focusmon },
+	{ "setcfact",                setcfact },
+	{ "moveplace",               moveplace },
+	{ "setkeymode",              setkeymode },
+	{ "tagmon",                  tagmon },
+	{ "zoom",                    zoom },
+	{ "incrgaps",                incrgaps },
+	{ "incrigaps",               incrigaps },
+	{ "incrogaps",               incrogaps },
+	{ "incrihgaps",              incrihgaps },
+	{ "incrivgaps",              incrivgaps },
+	{ "incrohgaps",              incrohgaps },
+	{ "incrovgaps",              incrovgaps },
+	{ "togglegaps",              togglegaps },
+	{ "defaultgaps",             defaultgaps },
+	{ "setgaps",                 setgapsex },
+	{ "view",                    view },
+	{ "viewall",                 viewallex },
+	{ "viewex",                  viewex },
+	{ "toggleview",              toggleview },
+	{ "shiftboth",               shiftboth },
+	{ "shifttag",                shifttag },
+	{ "shifttagclients",         shifttagclients },
+	{ "shiftview",               shiftview },
+	{ "shiftviewclients",        shiftviewclients },
+	{ "togglesticky",            togglesticky },
+	{ "cyclelayout",             cyclelayout },
+	{ "toggleviewex",            toggleviewex },
+	{ "tag",                     tag },
+	{ "tagall",                  tagallex },
+	{ "tagex",                   tagex },
+	{ "toggletag",               toggletag },
+	{ "toggletagex",             toggletagex },
+	{ "tagallmon",               tagallmon },
+	{ "togglealttag",            togglealttag },
+	{ "togglefullscreen",        togglefullscreen },
+	{ "togglefakefullscreen",    togglefakefullscreen },
+	{ "togglehorizontalmax",     togglehorizontalmax },
+	{ "toggleverticalmax",       toggleverticalmax },
+	{ "togglemax",               togglemax },
+	{ "killclient",              killclient },
+	{ "xrdb",                    xrdb },
+	{ "quit",                    quit },
+	{ "setlayout",               setlayout },
+	{ "setlayoutex",             setlayoutex },
+};
 

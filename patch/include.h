@@ -22,6 +22,7 @@
 #include "decorationhints.h"
 #include "dragcfact.h"
 #include "dragmfact.h"
+#include "dwmc.h"
 #include "fakefullscreenclient.h"
 #include "floatpos.h"
 #include "keymodes.h"

@@ -21,6 +21,7 @@
 #include "cyclelayouts.c"
 #include "decorationhints.c"
 #include "dragcfact.c"
+#include "dwmc.c"
 #include "fakefullscreenclient.c"
 #include "floatpos.c"
 #include "keymodes.c"

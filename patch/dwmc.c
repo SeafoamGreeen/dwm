@@ -67,6 +67,8 @@ fake_signal(void)
 				sscanf(fsignal + len_indicator + n, "%u", &(arg.ui));
 			else if (strncmp(param, "f", n - len_str_sig) == 0)
 				sscanf(fsignal + len_indicator + n, "%f", &(arg.f));
+      else if (strncmp(param, "v", n - len_str_sig) == 0)
+				arg.v = &(fsignal[len_indicator + n + 1]);
 			else return 1;
 
 			// Check if a signal was found, and if so handle it

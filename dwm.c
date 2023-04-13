@@ -2140,6 +2140,12 @@ setlayout(const Arg *arg)
 void
 setmfact(const Arg *arg)
 {
+   if (arg->f==0) {
+        /* selmon->mfact = mfact; */
+	selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag] = mfact;
+        arrange(selmon);
+        return;
+    }
 	float f;
 
 	if (!arg || !selmon->lt[selmon->sellt]->arrange)

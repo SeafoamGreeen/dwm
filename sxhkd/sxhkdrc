@@ -1,0 +1,48 @@
+#Move client
+super+m; {1-9}
+ dwmc tagex {0-8}
+
+super+m; {j,k,l,u,i,o,7,8,9}
+ dwmc tagex {0-8}
+
+#Move and follow client
+super+M; {1-9}
+ n={0-8} && dwmc tagex $n && dwmc viewex $n
+
+super+M; {j,k,l,u,i,o,7,8,9}
+ n={0-8} && dwmc tagex $n && dwmc viewex $n
+
+#View tags
+super+n; {j,k,l,u,i,o,7,8,9}
+ dwmc viewex {0-8}
+
+#Toggle tags
+super+comma: {1-9}
+ dwmc toggleviewex {0-8}
+
+super+comma: {j,k,l,u,i,o,7,8,9}
+ dwmc toggleviewex {0-8}
+
+#Resize
+super+r: {h,j,k,l,o}
+ dwmc {setmfact -0.01,setcfact -0.05,setcfact +0.05,setmfact +0.01, setmfact 0 && dwmc setcfact 0}
+
+#Launch Dictionary
+super+d
+ librewolf --new-window moz-extension://703018d4-db7f-4695-a3d5-ceca7caacfad/search.html
+
+#Reorganize tags
+super+o
+  dwmc reorganizetags 0
+
+super+alt+f
+ dwmc togglebar && dwmc setlayoutex 1
+
+#Resize client and position using floatpos
+super+x: {1,2,3,4,5,6,j,k,l,u,i,o,7,8,9}
+ dwmc floatpos "{425W 240H,720W 405H,960W 540H,1280W 720H,1366W 768H,1600W 900H,0% 100%,50% 100%,100% 100%,0% 50%,50% 50%,100% 50%,0% 0%,50% 0%,100% 0%}"
+
+
+# #Gaps
+super+g: {_,shift +}{k,j,o}
+  dwmc {incrgaps 15, incrgaps 5,incrgaps -15,incrgaps -5, togglegaps,setgaps 0}

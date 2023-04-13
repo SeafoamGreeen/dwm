@@ -11,7 +11,7 @@ static const unsigned int gappov         = 0;  /* vert outer gap between windows
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 0;   /* 0 means bottom bar */
-static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
+static const int bar_height              = 33;   /* 0 means derive from font, >= 1 explicit height */
 static int floatposgrid_x                = 5;  /* float grid columns */
 static int floatposgrid_y                = 5;  /* float grid rows */
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
@@ -28,63 +28,63 @@ static int tiledindicatortype            = INDICATOR_NONE;
 static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 static int fakefsindicatortype           = INDICATOR_PLUS;
 static int floatfakefsindicatortype      = INDICATOR_PLUS_AND_LARGER_SQUARE;
-static const char *fonts[]               = { "Fira Code Nerd Font:size=9:style=Regular","Fira Code Nerd Font:size=16" };
-/* static const char *fonts[]               = { " Terminus:size=11","Fira Code Nerd Font:size=16" }; */
+/* static const char *fonts[]               = { "Fira Code Nerd Font:size=9:style=Regular","Fira Code Nerd Font:size=16" }; */
+static const char *fonts[]               = { " Terminus:size=11","Fira Code Nerd Font:size=16" };
 /* static const char *fonts[]               = { " :size=7","Fira Code Nerd Font:size=16" }; */
 static const char dmenufont[]            = "monospace:size=10";
 
 static char c000000[]                    = "#000000"; // placeholder value
 
-#include "/home/seafoam/.cache/wal/colors-wal-dwm.h"
-/* static char normfgcolor[]                = "#bbbbbb"; */
-/* static char normbgcolor[]                = "#222222"; */
-/* static char normbordercolor[]            = "#444444"; */
-/* static char normfloatcolor[]             = "#db8fd9"; */
+/* #include "/home/seafoam/.cache/wal/colors-wal-dwm.h" */
+static char normfgcolor[]                = "#bbbbbb";
+static char normbgcolor[]                = "#222222";
+static char normbordercolor[]            = "#444444";
+static char normfloatcolor[]             = "#db8fd9";
 
-/* static char selfgcolor[]                 = "#eeeeee"; */
-/* static char selbgcolor[]                 = "#005577"; */
-/* static char selbordercolor[]             = "#005577"; */
-/* static char selfloatcolor[]              = "#005577"; */
+static char selfgcolor[]                 = "#eeeeee";
+static char selbgcolor[]                 = "#005577";
+static char selbordercolor[]             = "#005577";
+static char selfloatcolor[]              = "#005577";
 
-/* static char titlenormfgcolor[]           = "#bbbbbb"; */
-/* static char titlenormbgcolor[]           = "#222222"; */
-/* static char titlenormbordercolor[]       = "#444444"; */
-/* static char titlenormfloatcolor[]        = "#db8fd9"; */
+static char titlenormfgcolor[]           = "#bbbbbb";
+static char titlenormbgcolor[]           = "#222222";
+static char titlenormbordercolor[]       = "#444444";
+static char titlenormfloatcolor[]        = "#db8fd9";
 
-/* static char titleselfgcolor[]            = "#eeeeee"; */
-/* static char titleselbgcolor[]            = "#005577"; */
-/* static char titleselbordercolor[]        = "#005577"; */
-/* static char titleselfloatcolor[]         = "#005577"; */
+static char titleselfgcolor[]            = "#eeeeee";
+static char titleselbgcolor[]            = "#005577";
+static char titleselbordercolor[]        = "#005577";
+static char titleselfloatcolor[]         = "#005577";
 
-/* static char tagsnormfgcolor[]            = "#bbbbbb"; */
-/* static char tagsnormbgcolor[]            = "#222222"; */
-/* static char tagsnormbordercolor[]        = "#444444"; */
-/* static char tagsnormfloatcolor[]         = "#db8fd9"; */
+static char tagsnormfgcolor[]            = "#bbbbbb";
+static char tagsnormbgcolor[]            = "#222222";
+static char tagsnormbordercolor[]        = "#444444";
+static char tagsnormfloatcolor[]         = "#db8fd9";
 
-/* static char tagsselfgcolor[]             = "#eeeeee"; */
-/* static char tagsselbgcolor[]             = "#005577"; */
-/* static char tagsselbordercolor[]         = "#005577"; */
-/* static char tagsselfloatcolor[]          = "#005577"; */
+static char tagsselfgcolor[]             = "#eeeeee";
+static char tagsselbgcolor[]             = "#005577";
+static char tagsselbordercolor[]         = "#005577";
+static char tagsselfloatcolor[]          = "#005577";
 
-/* static char hidnormfgcolor[]             = "#005577"; */
-/* static char hidselfgcolor[]              = "#227799"; */
-/* static char hidnormbgcolor[]             = "#222222"; */
-/* static char hidselbgcolor[]              = "#222222"; */
+static char hidnormfgcolor[]             = "#005577";
+static char hidselfgcolor[]              = "#227799";
+static char hidnormbgcolor[]             = "#222222";
+static char hidselbgcolor[]              = "#222222";
 
-/* static char urgfgcolor[]                 = "#bbbbbb"; */
-/* static char urgbgcolor[]                 = "#222222"; */
-/* static char urgbordercolor[]             = "#ff0000"; */
-/* static char urgfloatcolor[]              = "#db8fd9"; */
+static char urgfgcolor[]                 = "#bbbbbb";
+static char urgbgcolor[]                 = "#222222";
+static char urgbordercolor[]             = "#ff0000";
+static char urgfloatcolor[]              = "#db8fd9";
 
-/* static char scratchselfgcolor[]          = "#FFF7D4"; */
-/* static char scratchselbgcolor[]          = "#77547E"; */
-/* static char scratchselbordercolor[]      = "#894B9F"; */
-/* static char scratchselfloatcolor[]       = "#894B9F"; */
+static char scratchselfgcolor[]          = "#FFF7D4";
+static char scratchselbgcolor[]          = "#77547E";
+static char scratchselbordercolor[]      = "#894B9F";
+static char scratchselfloatcolor[]       = "#894B9F";
 
-/* static char scratchnormfgcolor[]         = "#FFF7D4"; */
-/* static char scratchnormbgcolor[]         = "#664C67"; */
-/* static char scratchnormbordercolor[]     = "#77547E"; */
-/* static char scratchnormfloatcolor[]      = "#77547E"; */
+static char scratchnormfgcolor[]         = "#FFF7D4";
+static char scratchnormbgcolor[]         = "#664C67";
+static char scratchnormbordercolor[]     = "#77547E";
+static char scratchnormfloatcolor[]      = "#77547E";
 
 
 
@@ -332,7 +332,7 @@ static Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_0,          togglegaps,             {0} },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
 
-	{ MODKEY,                       XK_Tab,        view,                   {0} },
+	/* { MODKEY,                       XK_Tab,        view,                   {0} }, */
 	{ MODKEY,              XK_h,        shiftviewclients,       { .i = -1 } },
 	{ MODKEY,              XK_l,  shiftviewclients,       { .i = +1 } },
 	{ MODKEY|ShiftMask,             XK_h,        shiftview,              { .i = -1 } },

@@ -35,46 +35,50 @@ static const char dmenufont[]            = "monospace:size=10";
 
 static char c000000[]                    = "#000000"; // placeholder value
 
+/* If you use pywal uncomment*/
+
 /* #include "/home/seafoam/.cache/wal/colors-wal-dwm.h" */
-static char normfgcolor[]                = "#bbbbbb";
-static char normbgcolor[]                = "#222222";
+
+/* Normal color scheme  */
+static char normfgcolor[]                = "#ffffff";
+static char normbgcolor[]                = "#000000";
 static char normbordercolor[]            = "#444444";
-static char normfloatcolor[]             = "#db8fd9";
+static char normfloatcolor[]             = "#444444";
 
-static char selfgcolor[]                 = "#eeeeee";
-static char selbgcolor[]                 = "#005577";
-static char selbordercolor[]             = "#005577";
-static char selfloatcolor[]              = "#005577";
+static char selfgcolor[]                 = "#000000";
+static char selbgcolor[]                 = "#ffffff";
+static char selbordercolor[]             = "#ffffff";
+static char selfloatcolor[]              = "#ffffff";
 
-static char titlenormfgcolor[]           = "#bbbbbb";
-static char titlenormbgcolor[]           = "#222222";
+static char titlenormfgcolor[]           = "#ffffff";
+static char titlenormbgcolor[]           = "#000000";
 static char titlenormbordercolor[]       = "#444444";
-static char titlenormfloatcolor[]        = "#db8fd9";
+static char titlenormfloatcolor[]        = "#444444";
 
-static char titleselfgcolor[]            = "#eeeeee";
-static char titleselbgcolor[]            = "#005577";
-static char titleselbordercolor[]        = "#005577";
-static char titleselfloatcolor[]         = "#005577";
+static char titleselfgcolor[]            = "#000000";
+static char titleselbgcolor[]            = "#ffffff";
+static char titleselbordercolor[]        = "#ffffff";
+static char titleselfloatcolor[]         = "#ffffff";
 
-static char tagsnormfgcolor[]            = "#bbbbbb";
-static char tagsnormbgcolor[]            = "#222222";
-static char tagsnormbordercolor[]        = "#444444";
-static char tagsnormfloatcolor[]         = "#db8fd9";
+static char tagsnormfgcolor[]            = "#ffffff";
+static char tagsnormbgcolor[]            = "#000000";
+static char tagsnormbordercolor[]        = "#000000";
+static char tagsnormfloatcolor[]         = "#000000";
 
-static char tagsselfgcolor[]             = "#eeeeee";
-static char tagsselbgcolor[]             = "#005577";
-static char tagsselbordercolor[]         = "#005577";
-static char tagsselfloatcolor[]          = "#005577";
+static char tagsselfgcolor[]             = "#000000";
+static char tagsselbgcolor[]             = "#ffffff";
+static char tagsselbordercolor[]         = "#ffffff";
+static char tagsselfloatcolor[]          = "#ffffff";
 
 static char hidnormfgcolor[]             = "#005577";
 static char hidselfgcolor[]              = "#227799";
 static char hidnormbgcolor[]             = "#222222";
 static char hidselbgcolor[]              = "#222222";
 
-static char urgfgcolor[]                 = "#bbbbbb";
-static char urgbgcolor[]                 = "#222222";
+static char urgfgcolor[]                 = "#ffffff";
+static char urgbgcolor[]                 = "#ff0000";
 static char urgbordercolor[]             = "#ff0000";
-static char urgfloatcolor[]              = "#db8fd9";
+static char urgfloatcolor[]              = "#ff0000";
 
 static char scratchselfgcolor[]          = "#FFF7D4";
 static char scratchselbgcolor[]          = "#77547E";
@@ -83,8 +87,8 @@ static char scratchselfloatcolor[]       = "#894B9F";
 
 static char scratchnormfgcolor[]         = "#FFF7D4";
 static char scratchnormbgcolor[]         = "#664C67";
-static char scratchnormbordercolor[]     = "#77547E";
-static char scratchnormfloatcolor[]      = "#77547E";
+static char scratchnormbordercolor[]     = "#444444";
+static char scratchnormfloatcolor[]      = "#444444";
 
 
 
